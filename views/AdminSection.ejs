@@ -3,10 +3,79 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Admin Section</title>
+    <link rel="stylesheet" href="/styles.css">
 </head>
 <body>
-    <p>hi admin section is here</p>
-    
+    <h1>Admin Section</h1>
+    <p>Hi Admin! This section is for managing books.</p>
+
+    <form id="adminForm">
+        <label>Select Action:</label>
+        <div>
+            <input type="radio" id="addBook" name="action" value="addBook" required>
+            <label for="addBook">Add Book</label>
+        </div>
+
+        <div>
+            <input type="radio" id="addMoreCopies" name="action" value="addMoreCopies" required>
+            <label for="addMoreCopies">Add More Copies</label>
+        </div>
+
+        <div>
+            <input type="radio" id="stocks" name="action" value="stocks" required>
+            <label for="stocks">Update the stocks</label>
+        </div>
+
+        <div>
+            <input type="radio" id="Writer" name="action" value="Writer" required>
+            <label for="Writer">See the Writer details</label>
+        </div>
+        
+        <div>
+            <input type="radio" id="Weeksell" name="action" value="Weeksell" required>
+            <label for="Weeksell">Total Sell of the Week</label>
+        </div>
+
+        <div>
+            <input type="radio" id="Monthsell" name="action" value="Monthsell" required>
+            <label for="Monthsell">Total sell of the Month</label>
+        </div>
+
+
+        <!-- Add more options as needed -->
+    </form>
+
+    <script>
+        // JavaScript to handle form submission and redirection
+        document.getElementById('adminForm').addEventListener('change', function(event) {
+            const selectedAction = document.querySelector('input[name="action"]:checked').value;
+
+            // Perform different actions based on the selected radio button
+            if (selectedAction === 'addBook') {
+                // Redirect to the page for adding a new book
+                window.location.href = '/addBook';
+            } else if (selectedAction === 'addMoreCopies') {
+                // Redirect to the page for adding more copies
+                window.location.href = '/addMoreCopies';
+            } else if (selectedAction === 'stocks') {
+                // Redirect to the page for adding more copies
+                window.location.href = '/stocks';
+            } else if (selectedAction === 'Writer') {
+                // Redirect to the page for adding more copies
+                window.location.href = '/Writer';
+            } else if (selectedAction === 'Weeksell') {
+                // Redirect to the page for adding more copies
+                window.location.href = '/Weeksell';
+            } else if (selectedAction === 'Monthsell') {
+                // Redirect to the page for adding more copies
+                window.location.href = '/Monthsell';
+            }
+
+            // Add more conditions for other actions as needed
+        });
+    </script>
+
+    <a href="/bookList">View Book List</a>
 </body>
 </html>

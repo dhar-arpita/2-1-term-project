@@ -1,0 +1,79 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book Details</title>
+    <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+    <h1>Book Details</h1>
+
+    <form action="" method="post">
+        <div>
+            <label for="isbn"><strong>ISBN:</strong></label>
+            <input type="text" id="isbn" name="isbn" value="<%= book.ISBN %>" readonly>
+        </div>
+        
+        <div>
+            <label for="title"><strong>Title:</strong></label>
+            <input type="text" id="title" name="title" value="<%= book.title %>" readonly>
+        </div>
+        <div>
+            <label for="Edition"><strong>Edition:</strong></label>
+            <input type="number" id="Edition" name="Edition" value="<%= book.EDITION%>" readonly>
+        </div>
+        <div>
+            <label for="Weight"><strong>Weight:</strong></label>
+            <input type="text" id="weight" name="weight" value="<%= book.WEIGHT %>" readonly>
+        </div>
+
+        <div>
+            <label for="publicationyear"><strong>PUBLICATION_YEAR:</strong></label>
+            <input type="number" id="publicationyear" name="publicationyear" value="<%= book.PUBLICATION_YEAR %>" readonly>
+        </div>
+
+        <div>
+            <label for="Dimension"><strong>Dimension:</strong></label>
+            <input type="text" id="Dimension" name="dimension" value="<%= book.DIMENSION %>" readonly>
+        </div>
+
+        <div>
+            <label for="category"><strong>Category:</strong></label>
+            <input type="text" id="category" name="category" value="<%= book.category %>" readonly>
+        </div>
+
+        <div>
+            <label for="language"><strong>Language:</strong></label>
+            <input type="text" id="author" name="author" value="<%= book.LANGUAGE %>" readonly>
+        </div>
+        <div>
+            <label for="stocks"><strong>Stocks:</strong></label>
+            <input type="number" id="stocks" name="stocks" value="<%= book.stocks %>" required>
+        </div>
+
+        <div>
+            <label for="price"><strong>Price:</strong></label>
+            <input type="number" id="price" name="price" value="<%= book.price %>" required>
+        </div>
+       
+        <div>
+            <p><strong>Authors:</strong></p>
+        <ul>
+            <% book.authors.forEach(author => { %>
+                <li><%= author %></li>
+            <% }); %>
+        </ul>
+        </div>
+
+     
+
+        <button type="submit">Submit Update</button>
+    </form>
+
+    <a href="AdminSection">Back to Admin section</a>
+</body
+
+

@@ -178,7 +178,231 @@ app.post('/Admin',async function(req,res){
 });
 
 
-app.get('/')
+app.get('/AdminSection',async function(req,res){
+      res.render('AdminSection');
+     
+});
+
+
+
+app.get('/addBook',async function(req,res){
+   res.render('publication');     
+});
+
+app.post('/publication',async function(req,res){
+      const name = req.body.name;
+      const email = req.body.email;
+      try{
+        const connection = await connectionModule.getConnection();
+
+       
+        const result= await connection.execute(
+            "SELECT NAME, ID FROM PUBLISHER WHERE NAME = :name AND EMAIL = :email",
+            { name : name, email: email},
+            { outFormat: oracledb.OUT_FORMAT_OBJECT }
+        );
+
+        if(result.rows.length === 0){
+             res.render('publicationDetails',{message: "The publisher is new.Putt publisher details first"});
+        }
+
+        else{
+          res.render('writerDetails');
+        }
+      }catch (error) {
+        res.status(500).send('Error inserting data');
+    }finally{
+        connectionModule.closeConnection();
+    }
+});
+
+app.post('/publicationDetails',async function(req,res){
+    const name = req.body.name;
+    const email = req.body.Email;
+    const city = req.body.City;
+    const postal_code = req.body.PostalCode;
+    const road_no = req.body.RoadNo;
+
+    try {
+        const connection = await connectionModule.getConnection();
+
+       
+        const addressQuery = await connection.execute(
+            "SELECT ADDRESS_ID FROM ADDRESS WHERE CITY = :city AND POSTAL_CODE = :postal_code AND ROAD_NUMBER = :road_no",
+            { city: city, postal_code: postal_code, road_no: road_no },
+            { outFormat: oracledb.OUT_FORMAT_OBJECT }
+        );
+
+        let addressId;
+
+        if (addressQuery.rows.length === 0) {
+          
+       
+            const lastAddressQuery = await connection.execute(
+                "SELECT MAX(ADDRESS_ID) AS LAST_ADDRESS_ID FROM ADDRESS",
+                [],
+                { outFormat: oracledb.OUT_FORMAT_OBJECT }
+            );
+
+            const lastAddressId = lastAddressQuery.rows[0].LAST_ADDRESS_ID || 0;
+            addressId = lastAddressId + 1;
+       
+          
+    
+            await connection.execute(
+                "INSERT INTO ADDRESS(ADDRESS_ID, CITY, POSTAL_CODE, ROAD_NUMBER) " +
+                "VALUES (:addressId, :city, :postal_code, :road_no)",
+                { addressId: addressId, city: city, postal_code: postal_code, road_no: road_no },
+                { autoCommit: true }
+            );
+        } else {
+           
+            addressId = addressQuery.rows[0].ADDRESS_ID;
+        } const result = await connection.execute(
+            "INSERT INTO PUBLISHER(NAME, EMAIL,  ADDRESS_ID) " +
+            "VALUES (:name,::email,:addressId) ",
+            { name:name,email:email,addressId: addressId },
+            { autoCommit: true }
+        );
+    
+        res.render('WriterDetails');
+        
+    } catch (error) {
+        res.status(500).send('Error inserting data');
+    }finally{
+        connectionModule.closeConnection();
+    }
+       
+});
+
+app.post('/WriterDetails' , async function(req,res){
+    
+        
+    
+          
+});
+
+app.get('/addMoreCopies',async function(req,res){
+    res.render('addMoreCopies');     
+ });
+
+ app.post('/addMoreCopies', async function (req,res){
+    const Title = req.body.title;
+
+    try {
+        const connection = await connectionModule.getConnection();
+
+       
+        const resultS = await connection.execute(
+            "SELECT * FROM BOOK WHERE TITLE = :title ",
+            { title: title},
+            { outFormat: oracledb.OUT_FORMAT_OBJECT }
+        );
+
+        if (resultS.rows.length === 0) {
+            res.redirect('addMoreCopies',{message: "No such book exist in your database"});
+       }
+   
+     else{
+        const result = await connection.execute(
+            "SELECT B.*, A.NAME AS AUTHOR_NAME " +
+            "FROM AUTHOR A " +
+            "JOIN BOOK_AUTHOR BA ON A.AUTHOR_ID = BA.AUTHOR_ID " +
+            "JOIN BOOK B ON BA.ISBN = B.ISBN " +
+            "WHERE B.ISBN = :isbn",
+            { isbn },
+            { outFormat: oracledb.OUT_FORMAT_OBJECT }
+        );
+
+    
+        const bookDetails = {
+            isbn: result.rows[0].ISBN,
+            title: result.rows[0].TITLE,
+            price: result.rows[0].PRICE,
+            category: result.rows[0].CATEGORY,
+            weight: result.rows[0].WEIGHT,
+            dimension:result.rows[0].dimension,
+            edition: result.rows[0].EDITION,
+            publication_year:result.rows[0].PUBLICATION_YEAR,
+            language:result.rows[0].LANGUAGE,
+            stocks:result.rows[0].STOCKS,
+            authors: result.rows.map(row => row.AUTHOR_NAME)
+        };
+
+       
+        res.render('bookDetails', { book: bookDetails });
+    }
+    }catch(error){
+        res.status(500).send('Error inserting data');
+    }finally{
+        connectionModule.closeConnection();
+    }
+
+   
+ })
+
+ app.post('/bookDetails',async function(req,res){
+         const stocks = req.body.stocks;
+         const price = req.body.price;
+         const title = req.body.title;
+
+         try{
+         const connection = await connectionModule.getConnection();
+
+         await connection.execute(
+            "UPDATE BOOK  SET STOCKS = :stocks, PRICE = :price, WHERE TITLE = :title",
+            { stocks: stocks, price: price },
+            { autoCommit: true }
+        );
+
+         // Render the bookDetails.ejs page and pass the book details as data
+    
+         }catch (error) {
+            res.status(500).send('Error updating data');
+        }finally{
+            connectionModule.closeConnection();
+        }
+
+        res.redirect('bookDetails',{message: "Update successfully"});
+ });
+
+
+
+ app.get('/stocks',async function(req,res){
+    res.render('stocks');     
+ });
+
+ app.post('/stocks',async function(req,res){
+
+ })
+ app.get('/Writer',async function(req,res){
+    res.render('Writer');     
+ });
+
+ app.post('/Writer',async function(req,res){
+
+ });
+
+ app.get('/Weeksell',async function(req,res){
+    res.render('Weeksell');     
+ });
+
+ app.post('/Weeksell',async function(req,res){
+
+ });
+
+ app.get('/Monthsell',async function(req,res){
+    res.render('Monthsell');     
+ });
+
+ app.post('/Monthsell',async function(req,res){
+
+ });
+ 
+ 
+ 
+ 
+ 
 
  
 
