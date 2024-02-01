@@ -22,14 +22,10 @@
             <label for="addMoreCopies">Add More Copies</label>
         </div>
 
-        <div>
-            <input type="radio" id="stocks" name="action" value="stocks" required>
-            <label for="stocks">Update the stocks</label>
-        </div>
 
         <div>
-            <input type="radio" id="Writer" name="action" value="Writer" required>
-            <label for="Writer">See the Writer details</label>
+            <input type="radio" id="BestSellingBooks" name="action" value="BestSellingBooks" required>
+            <label for="BestSellingBooks">See the best selling book of the month</label>
         </div>
         
         <div>
@@ -43,36 +39,34 @@
         </div>
 
 
-        <!-- Add more options as needed -->
+      
     </form>
 
     <script>
-        // JavaScript to handle form submission and redirection
+   
         document.getElementById('adminForm').addEventListener('change', function(event) {
             const selectedAction = document.querySelector('input[name="action"]:checked').value;
 
-            // Perform different actions based on the selected radio button
+         
             if (selectedAction === 'addBook') {
-                // Redirect to the page for adding a new book
+     
                 window.location.href = '/addBook';
             } else if (selectedAction === 'addMoreCopies') {
-                // Redirect to the page for adding more copies
+              
                 window.location.href = '/addMoreCopies';
-            } else if (selectedAction === 'stocks') {
-                // Redirect to the page for adding more copies
-                window.location.href = '/stocks';
-            } else if (selectedAction === 'Writer') {
-                // Redirect to the page for adding more copies
-                window.location.href = '/Writer';
+            } 
+             else if (selectedAction === 'BestSellingBooks') {
+             
+                window.location.href = '/BestSellingBooks';
             } else if (selectedAction === 'Weeksell') {
-                // Redirect to the page for adding more copies
+                
                 window.location.href = '/Weeksell';
             } else if (selectedAction === 'Monthsell') {
-                // Redirect to the page for adding more copies
+            
                 window.location.href = '/Monthsell';
             }
 
-            // Add more conditions for other actions as needed
+            
         });
     </script>
 

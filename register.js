@@ -186,34 +186,176 @@ app.get('/AdminSection',async function(req,res){
 
 
 app.get('/addBook',async function(req,res){
-   res.render('publication');     
+   res.render('addBookDetails');     
 });
 
-app.post('/publication',async function(req,res){
-      const name = req.body.name;
-      const email = req.body.email;
-      try{
+app.post('/addBookDetails' , async function(req,res){
+    const isbn = req.body.isbn;
+    const title = req.body.title;
+    const pyear = req.body.Publicationyear;
+    const language = req.body.language;
+    const dimension = req.body.dimension;
+    const weight = req.body.weight;
+    const stocks = req.body.stocks;
+    const price = req.body.price;
+    const edition = req.body.edition;
+    const authors = req.body.authors;
+    const category = req.body.category;
+     
+    try {
         const connection = await connectionModule.getConnection();
 
-       
-        const result= await connection.execute(
-            "SELECT NAME, ID FROM PUBLISHER WHERE NAME = :name AND EMAIL = :email",
-            { name : name, email: email},
+        for (const authorName of authors) {
+            
+            const authorId = await getOrCreateAuthorId(connection, authorName);
+            await connection.execute(
+                "INSERT INTO BOOK_AUTHOR (ISBN, AUTHOR_ID) VALUES (:isbn, :authorId)",
+                { isbn, authorId }
+            );
+        }
+
+        for (const categories of category) {
+            const categoryid = await getOrCreateCategoryId(connection, categories);
+
+            await connection.execute(
+                "INSERT INTO BOOK_CATEGORY (ISBN, CATEGORY_ID) VALUES (:isbn, :categoryid)",
+                { isbn, categoryid}
+            );
+        }
+
+       await connection.execute(
+        "INSERT INTO BOOK (ISBN,TITLE,PUBLICATION_YEAR,EDITION,DIMENSION,WEIGHT,STOCKS,PRICE,LANGUAGE)"+
+        "VALUES (:isbn,:title,:pyear,:edition,:dimension,:weight,:stocks,:price,:language)",
+        {isbn,title,pyear,edition,dimension,weight,stocks,price,language}
+       );
+
+       res.render('publication',{message:"Publication Details"});
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('Error adding book.');
+    } finally {
+        connectionModule.closeConnection();
+    }       
+});
+
+async function getOrCreateAuthorId(connection, authorName) {
+    const result = await connection.execute(
+        "SELECT AUTHOR_ID FROM AUTHOR WHERE NAME = :authorName",
+        { authorName },
+        { outFormat: oracledb.OUT_FORMAT_OBJECT }
+    );
+
+    if (result.rows.length > 0) {
+        return result.rows[0].AUTHOR_ID;
+    } else {
+
+        try {
+            const connection = await connectionModule.getConnection();
+        const lastCID = await connection.execute(
+            "SELECT MAX(AUTHOR_ID) AS LAST_AUTHOR_ID FROM AUTHOR",
+            [],
             { outFormat: oracledb.OUT_FORMAT_OBJECT }
         );
+    
+        const lastID = lastwriterID.rows[0].LAST_AUTHOR_ID || 0;
+        ID = lastID + 1;
+    
+      
+    
+        await connection.execute(
+            "INSERT INTO AUTHOR(AUTHOR_ID, NAME) " +
+            "VALUES (:AUTHOR_ID, :NAME)",
+            { ID: ID, name:authorName},
+            { autoCommit: true }
+        );
 
-        if(result.rows.length === 0){
-             res.render('publicationDetails',{message: "The publisher is new.Putt publisher details first"});
-        }
-
-        else{
-          res.render('writerDetails');
-        }
-      }catch (error) {
-        res.status(500).send('Error inserting data');
-    }finally{
+        return ID;
+    
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('Error adding copies and authors.');
+    } finally {
         connectionModule.closeConnection();
     }
+}
+}
+
+async function getOrCreateCategoryId(connection, categoryName) {
+    const result = await connection.execute(
+        "SELECT CATEGORY_ID FROM CATEGORY WHERE NAME = :categoryName",
+        { categoryName },
+        { outFormat: oracledb.OUT_FORMAT_OBJECT }
+    );
+
+    if (result.rows.length > 0) {
+        return result.rows[0].CATEGORY_ID;
+    } else {
+
+        try {
+            const connection = await connectionModule.getConnection();
+        const lastCID = await connection.execute(
+            "SELECT MAX(CATEGORY_ID) AS LAST_CATEGORY_ID FROM CATEGORY",
+            [],
+            { outFormat: oracledb.OUT_FORMAT_OBJECT }
+        );
+    
+        const lastID = lastCID.rows[0].LAST_CATEGORY_ID || 0;
+        ID = lastID + 1;
+    
+      
+    
+        await connection.execute(
+            "INSERT INTO CATEGORY(CATEGORY_ID, NAME) " +
+            "VALUES (:CATEGORY_ID, :NAME)",
+            { ID: ID, name:categoryName},
+            { autoCommit: true }
+        );
+
+
+   return ID;
+    
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('Error adding copies and authors.');
+    } finally {
+        connectionModule.closeConnection();
+    }
+}
+}
+
+
+app.post('/publication',async function(req,res){
+    const name = req.body.name;
+    const email = req.body.email;
+    const title = req.body.title;
+    try{
+      const connection = await connectionModule.getConnection();
+
+     
+      const result= await connection.execute(
+          "SELECT NAME, PUBLISHER_ID FROM PUBLISHER WHERE NAME = :name AND EMAIL = :email",
+          { name : name, email: email},
+          { outFormat: oracledb.OUT_FORMAT_OBJECT }
+      );
+
+      if(result.rows.length === 0){
+           res.render('publicationDetails',{message: "The publisher is new.Put publisher details first"});
+      }
+
+      else{
+          const id = result.rows[0].PUBLISHER_ID;
+          await connection.execute(
+              "UPDATE BOOK SET PUBLISHER_ID = :id WHERE TITLE = :title",
+              { id: id, title:title }
+          );
+          
+        res.render('addBookDetails',{messages:"Book added successfully!Want to add more book"});
+      }
+    }catch (error) {
+      res.status(500).send('Error inserting data');
+  }finally{
+      connectionModule.closeConnection();
+  }
 });
 
 app.post('/publicationDetails',async function(req,res){
@@ -265,7 +407,7 @@ app.post('/publicationDetails',async function(req,res){
             { autoCommit: true }
         );
     
-        res.render('WriterDetails');
+        res.render('publications');
         
     } catch (error) {
         res.status(500).send('Error inserting data');
@@ -275,12 +417,8 @@ app.post('/publicationDetails',async function(req,res){
        
 });
 
-app.post('/WriterDetails' , async function(req,res){
-    
-        
-    
-          
-});
+
+
 
 app.get('/addMoreCopies',async function(req,res){
     res.render('addMoreCopies');     
@@ -355,7 +493,6 @@ app.get('/addMoreCopies',async function(req,res){
             { autoCommit: true }
         );
 
-         // Render the bookDetails.ejs page and pass the book details as data
     
          }catch (error) {
             res.status(500).send('Error updating data');
@@ -365,40 +502,103 @@ app.get('/addMoreCopies',async function(req,res){
 
         res.redirect('bookDetails',{message: "Update successfully"});
  });
-
-
-
- app.get('/stocks',async function(req,res){
-    res.render('stocks');     
- });
-
- app.post('/stocks',async function(req,res){
-
- })
- app.get('/Writer',async function(req,res){
-    res.render('Writer');     
- });
-
- app.post('/Writer',async function(req,res){
-
- });
-
- app.get('/Weeksell',async function(req,res){
-    res.render('Weeksell');     
- });
-
- app.post('/Weeksell',async function(req,res){
-
- });
-
- app.get('/Monthsell',async function(req,res){
-    res.render('Monthsell');     
- });
-
- app.post('/Monthsell',async function(req,res){
-
- });
  
+app.get('/Weeksell', async (req, res) => {
+    try {
+        const connection = await connectionModule.getConnection();
+
+        const result = await connection.execute(
+            `SELECT SUM(
+                CASE
+                    WHEN CH.DISCOUNT IS NOT NULL THEN CH.BASE_PRICE - (CH.BASE_PRICE * CH.DISCOUNT / 100)
+                    ELSE CH.BASE_PRICE
+                END
+            ) AS TOTAL_SALES
+            FROM CART_HISTORY CH
+            JOIN "ORDER" O ON CH.CART_ID = O.CART_ID
+            WHERE TO_CHAR(O.ORDER_DATE, 'YYYY-MM-DD') >= TO_CHAR(TRUNC(SYSDATE, 'IW') - 7, 'YYYY-MM-DD')
+              AND TO_CHAR(O.ORDER_DATE, 'YYYY-MM-DD') < TO_CHAR(TRUNC(SYSDATE, 'IW'), 'YYYY-MM-DD')`
+        );
+
+        const totalSales = result.rows[0].TOTAL_SALES;
+
+        res.render('Weeksell',{totalSales});
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('Error fetching total sales');
+    } finally {
+        connectionModule.closeConnection();
+    }
+});
+
+
+
+
+app.get('/Monthsell', async (req, res) => {
+    try {
+        const connection = await connectionModule.getConnection();
+
+        const result = await connection.execute(
+            `SELECT SUM(
+                CASE
+                    WHEN CH.DISCOUNT IS NOT NULL THEN CH.BASE_PRICE - (CH.BASE_PRICE * CH.DISCOUNT / 100)
+                    ELSE CH.BASE_PRICE
+                END
+            ) AS TOTAL_SALES
+            FROM CART_HISTORY CH
+            JOIN "ORDER" O ON CH.CART_ID = O.CART_ID
+            WHERE TO_CHAR(O.ORDER_DATE, 'YYYY-MM') = TO_CHAR(SYSDATE, 'YYYY-MM')`
+        );
+
+        const totalSales = result.rows[0].TOTAL_SALES;
+
+        res.render('Monthsell', { totalSales });
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('Error fetching total sales');
+    } finally {
+        connectionModule.closeConnection();
+    }
+});
+
+app.get('/BestSellingBooksOfMonth', async (req, res) => {
+    try {
+        const connection = await connectionModule.getConnection();
+
+        const result = await connection.execute(
+            `SELECT B.ISBN, B.TITLE, SUM(
+                CASE
+                    WHEN CH.DISCOUNT IS NOT NULL THEN CH.BASE_PRICE - (CH.BASE_PRICE * CH.DISCOUNT / 100)
+                    ELSE CH.BASE_PRICE
+                END
+            ) AS TOTAL_SALES
+            FROM CART_HISTORY CH
+            JOIN "ORDER" O ON CH.CART_ID = O.CART_ID
+            JOIN BOOK B ON CH.ISBN = B.ISBN
+            WHERE TO_CHAR(O.ORDER_DATE, 'YYYY-MM') = TO_CHAR(SYSDATE, 'YYYY-MM')
+            GROUP BY B.ISBN, B.TITLE
+            ORDER BY TOTAL_SALES DESC`
+        );
+
+        if (result.rows.length > 0) {
+            const bestSellingBooks = result.rows.map(row => ({
+                isbn: row.ISBN,
+                title: row.TITLE,
+                totalSales: row.TOTAL_SALES,
+            }));
+
+            res.render('BestSellingBooksOfMonth', { bestSellingBooks });
+        } else {
+            res.render('BestSellingBooksOfMonth', { message: 'No sales data available for the current month.' });
+        }
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('Error fetching best-selling books of the month');
+    } finally {
+        connectionModule.closeConnection();
+    }
+});
+
  
  
  

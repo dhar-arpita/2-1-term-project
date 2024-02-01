@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Best Selling Books of the Month</title>
+    <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+    <h1>Best Selling Books of the Month</h1>
+
+    <% if (bestSellingBooks && bestSellingBooks.length > 0) { %>
+        <% bestSellingBooks.forEach((book, index) => { %>
+            <div class="book-container">
+                <h2>Book <%= index + 1 %></h2>
+                <strong>ISBN:</strong> <%= book.isbn %><br>
+                <strong>Title:</strong> <%= book.title %><br>
+                <strong>Total Sales:</strong> <%= book.totalSales %><br>
+               
+            </div>
+        <% }); %>
+    <% } else { %>
+        <p><%= message %></p>
+    <% } %>
+
+    <a href="/admin">Back to Admin Section</a>
+</body>
+</html>
