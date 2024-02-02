@@ -24,8 +24,8 @@
 
 
         <div>
-            <input type="radio" id="BestSellingBooks" name="action" value="BestSellingBooks" required>
-            <label for="BestSellingBooks">See the best selling book of the month</label>
+            <input type="radio" id="BestSellingBooksOfMonth" name="action" value="BestSellingBooksOfMonth" required>
+            <label for="BestSellingBooksOfMonth">See the best selling book of the month</label>
         </div>
         
         <div>
@@ -55,10 +55,14 @@
               
                 window.location.href = '/addMoreCopies';
             } 
-             else if (selectedAction === 'BestSellingBooks') {
+             else if (selectedAction === 'BestSellingBooksOfMonth') {
              
-                window.location.href = '/BestSellingBooks';
-            } else if (selectedAction === 'Weeksell') {
+                window.location.href = '/BestSellingBooksOfMonth';
+            }
+            else if (selectedAction === 'BestSellingBooksOfYear') {
+             
+             window.location.href = '/BestSellingBooksOfYear';
+         } else if (selectedAction === 'Weeksell') {
                 
                 window.location.href = '/Weeksell';
             } else if (selectedAction === 'Monthsell') {
