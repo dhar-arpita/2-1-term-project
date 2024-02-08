@@ -525,7 +525,7 @@ app.get('/Weeksell', async (req, res) => {
         res.render('Weeksell',{totalSales});
     } catch (error) {
         console.error(error);
-        res.status(500).send('Error fetching total sales');
+        res.status(500).send('Error  total sales');
     } finally {
         connectionModule.closeConnection();
     }
