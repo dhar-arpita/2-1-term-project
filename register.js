@@ -250,28 +250,23 @@ async function getOrCreateAuthorId(connection, authorName) {
     } else {
 
         try {
-            const connection = await connectionModule.getConnection();
-        const lastCID = await connection.execute(
-            "SELECT MAX(AUTHOR_ID) AS LAST_AUTHOR_ID FROM AUTHOR",
-            [],
-            { outFormat: oracledb.OUT_FORMAT_OBJECT }
-        );
-    
-        const lastID = lastwriterID.rows[0].LAST_AUTHOR_ID || 0;
-        ID = lastID + 1;
-    
-      
-    
-        await connection.execute(
-            "INSERT INTO AUTHOR(AUTHOR_ID, NAME) " +
-            "VALUES (:AUTHOR_ID, :NAME)",
-            { ID: ID, name:authorName},
-            { autoCommit: true }
-        );
 
-        return ID;
+            const outBindings = {
+                newAuthorID: { type: oracledb.NUMBER, dir: oracledb.BIND_OUT }
+            };
     
-    } catch (error) {
+  
+            const result = await connection.execute(
+                "INSERT INTO AUTHOR(NAME) VALUES (:name) RETURNING AUTHOR_ID INTO :newAuthorID",
+                { name: authorName },
+                outBindings,
+                { autoCommit: true }
+            );
+             
+            const newAuthorID = result.outBinds.newAuthorID[0];
+            return newAuthorID;
+
+           } catch (error) {
         console.error(error);
         res.status(500).send('Error adding copies and authors.');
     } finally {
@@ -292,27 +287,17 @@ async function getOrCreateCategoryId(connection, categoryName) {
     } else {
 
         try {
-            const connection = await connectionModule.getConnection();
-        const lastCID = await connection.execute(
-            "SELECT MAX(CATEGORY_ID) AS LAST_CATEGORY_ID FROM CATEGORY",
-            [],
-            { outFormat: oracledb.OUT_FORMAT_OBJECT }
-        );
     
-        const lastID = lastCID.rows[0].LAST_CATEGORY_ID || 0;
-        ID = lastID + 1;
-    
-      
-    
-        await connection.execute(
-            "INSERT INTO CATEGORY(CATEGORY_ID, NAME) " +
-            "VALUES (:CATEGORY_ID, :NAME)",
-            { ID: ID, name:categoryName},
-            { autoCommit: true }
-        );
-
-
-   return ID;
+            const result = await connection.execute(
+                "INSERT INTO CATEGORY(NAME) VALUES (:name) RETURNING CATEGORY_ID INTO :newcategoryID",
+                { name: categoryName },
+                outBindings,
+                { autoCommit: true }
+            );
+             
+            const newCategoryID = result.outBinds.newcategoryID[0];
+            return newCategoryID;
+         
     
     } catch (error) {
         console.error(error);
@@ -566,19 +551,22 @@ app.get('/BestSellingBooksOfMonth', async (req, res) => {
         const connection = await connectionModule.getConnection();
 
         const result = await connection.execute(
-            `SELECT B.ISBN, B.TITLE, SUM(
-                CASE
-                    WHEN CH.DISCOUNT IS NOT NULL THEN CH.BASE_PRICE - (CH.BASE_PRICE * CH.DISCOUNT / 100)
-                    ELSE CH.BASE_PRICE
-                END
-            ) AS TOTAL_SALES
-            FROM CART_HISTORY CH
-            JOIN "ORDER" O ON CH.CART_ID = O.CART_ID
-            JOIN BOOK B ON CH.ISBN = B.ISBN
-            WHERE TO_CHAR(O.ORDER_DATE, 'YYYY-MM') = TO_CHAR(SYSDATE, 'YYYY-MM')
-            GROUP BY B.ISBN, B.TITLE
-            ORDER BY TOTAL_SALES DESC`
+            `SELECT * FROM (
+                SELECT B.ISBN, B.TITLE, SUM(
+                    CASE
+                        WHEN CH.DISCOUNT IS NOT NULL THEN CH.BASE_PRICE - (CH.BASE_PRICE * CH.DISCOUNT / 100)
+                        ELSE CH.BASE_PRICE
+                    END
+                ) AS TOTAL_SALES
+                FROM CART_HISTORY CH
+                JOIN "ORDER" O ON CH.CART_ID = O.CART_ID
+                JOIN BOOK B ON CH.ISBN = B.ISBN
+                WHERE TO_CHAR(O.ORDER_DATE, 'YYYY-MM') = TO_CHAR(SYSDATE, 'YYYY-MM')
+                GROUP BY B.ISBN, B.TITLE
+                ORDER BY TOTAL_SALES DESC
+            ) WHERE ROWNUM <= 3`
         );
+        
 
         if (result.rows.length > 0) {
             const bestSellingBooks = result.rows.map(row => ({
@@ -602,21 +590,24 @@ app.get('/BestSellingBooksOfMonth', async (req, res) => {
 app.get('/BestSellingBooksOfYear', async (req, res) => {
     try {
         const connection = await connectionModule.getConnection();
-
+       
         const result = await connection.execute(
-            `SELECT B.ISBN, B.TITLE, SUM(
-                CASE
-                    WHEN CH.DISCOUNT IS NOT NULL THEN CH.BASE_PRICE - (CH.BASE_PRICE * CH.DISCOUNT / 100)
-                    ELSE CH.BASE_PRICE
-                END
-            ) AS TOTAL_SALES
-            FROM CART_HISTORY CH
-            JOIN "ORDER" O ON CH.CART_ID = O.CART_ID
-            JOIN BOOK B ON CH.ISBN = B.ISBN
-            WHERE TO_CHAR(O.ORDER_DATE, 'YYYY') = TO_CHAR(SYSDATE, 'YYYY')
-            GROUP BY B.ISBN, B.TITLE
-            ORDER BY TOTAL_SALES DESC`
+            `SELECT * FROM (
+                SELECT B.ISBN, B.TITLE, SUM(
+                    CASE
+                        WHEN CH.DISCOUNT IS NOT NULL THEN CH.BASE_PRICE - (CH.BASE_PRICE * CH.DISCOUNT / 100)
+                        ELSE CH.BASE_PRICE
+                    END
+                ) AS TOTAL_SALES
+                FROM CART_HISTORY CH
+                JOIN "ORDER" O ON CH.CART_ID = O.CART_ID
+                JOIN BOOK B ON CH.ISBN = B.ISBN
+                WHERE TO_CHAR(O.ORDER_DATE, 'YYYY') = TO_CHAR(SYSDATE, 'YYYY')
+                GROUP BY B.ISBN, B.TITLE
+                ORDER BY TOTAL_SALES DESC
+            ) WHERE ROWNUM <= 3`
         );
+        
 
         if (result.rows.length > 0) {
             const bestSellingBooks = result.rows.map(row => ({
