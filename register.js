@@ -32,6 +32,7 @@ app.post('/Batigharsignup', async function (req, res) {
     const city = req.body.City;
     const postal_code = req.body.PostalCode;
     const road_no = req.body.RoadNo;
+    const home_no = req.body.HomeNo;
 
 
     try {
@@ -39,8 +40,8 @@ app.post('/Batigharsignup', async function (req, res) {
 
        
         const addressQuery = await connection.execute(
-            "SELECT ADDRESS_ID FROM ADDRESS WHERE CITY = :city AND POSTAL_CODE = :postal_code AND ROAD_NUMBER = :road_no",
-            { city: city, postal_code: postal_code, road_no: road_no },
+            "SELECT ADDRESS_ID FROM ADDRESS WHERE CITY = :city AND POSTAL_CODE = :postal_code AND ROAD_NUMBER = :road_no AND HOME_NUMBER = :home_no",
+            { city: city, postal_code: postal_code, road_no: road_no ,home_no: home_no},
             { outFormat: oracledb.OUT_FORMAT_OBJECT }
         );
 
@@ -48,24 +49,19 @@ app.post('/Batigharsignup', async function (req, res) {
 
         if (addressQuery.rows.length === 0) {
           
-       
-            const lastAddressQuery = await connection.execute(
-                "SELECT MAX(ADDRESS_ID) AS LAST_ADDRESS_ID FROM ADDRESS",
-                [],
-                { outFormat: oracledb.OUT_FORMAT_OBJECT }
-            );
-
-            const lastAddressId = lastAddressQuery.rows[0].LAST_ADDRESS_ID || 0;
-            addressId = lastAddressId + 1;
-       
-          
+            const outBindings = {
+                newAddressID: { type: oracledb.NUMBER, dir: oracledb.BIND_OUT }
+            };
     
-            await connection.execute(
-                "INSERT INTO ADDRESS(ADDRESS_ID, CITY, POSTAL_CODE, ROAD_NUMBER) " +
-                "VALUES (:addressId, :city, :postal_code, :road_no)",
-                { addressId: addressId, city: city, postal_code: postal_code, road_no: road_no },
+            const result = await connection.execute(
+                "INSERT INTO ADDRESS(CITY, POSTAL_CODE, ROAD_NUMBER,HOME_NUMBER) " +
+                "VALUES ( :city, :postal_code, :road_no,:home_no) RETURNING ADDRESS_ID INTO :newAddressID",
+                {city: city, postal_code: postal_code, road_no: road_no, home_no: home_no },
+                outBindings,
                 { autoCommit: true }
             );
+
+            addressId = result.outBinds.newcAddressID[0];
         } else {
            
             addressId = addressQuery.rows[0].ADDRESS_ID;
@@ -288,6 +284,11 @@ async function getOrCreateCategoryId(connection, categoryName) {
 
         try {
     
+
+            const outBindings = {
+                newcategoryID: { type: oracledb.NUMBER, dir: oracledb.BIND_OUT }
+            };
+    
             const result = await connection.execute(
                 "INSERT INTO CATEGORY(NAME) VALUES (:name) RETURNING CATEGORY_ID INTO :newcategoryID",
                 { name: categoryName },
@@ -349,14 +350,15 @@ app.post('/publicationDetails',async function(req,res){
     const city = req.body.City;
     const postal_code = req.body.PostalCode;
     const road_no = req.body.RoadNo;
+    const home_no = req.body.HomeNo;
 
     try {
         const connection = await connectionModule.getConnection();
 
        
         const addressQuery = await connection.execute(
-            "SELECT ADDRESS_ID FROM ADDRESS WHERE CITY = :city AND POSTAL_CODE = :postal_code AND ROAD_NUMBER = :road_no",
-            { city: city, postal_code: postal_code, road_no: road_no },
+            "SELECT ADDRESS_ID FROM ADDRESS WHERE CITY = :city AND POSTAL_CODE = :postal_code AND ROAD_NUMBER = :road_no AND HOME_NUMER = home_no",
+            { city: city, postal_code: postal_code, road_no: road_no,home_no: home_no },
             { outFormat: oracledb.OUT_FORMAT_OBJECT }
         );
 
@@ -365,27 +367,26 @@ app.post('/publicationDetails',async function(req,res){
         if (addressQuery.rows.length === 0) {
           
        
-            const lastAddressQuery = await connection.execute(
-                "SELECT MAX(ADDRESS_ID) AS LAST_ADDRESS_ID FROM ADDRESS",
-                [],
-                { outFormat: oracledb.OUT_FORMAT_OBJECT }
-            );
-
-            const lastAddressId = lastAddressQuery.rows[0].LAST_ADDRESS_ID || 0;
-            addressId = lastAddressId + 1;
-       
-          
+            const outBindings = {
+                newAddressID: { type: oracledb.NUMBER, dir: oracledb.BIND_OUT }
+            };
     
-            await connection.execute(
-                "INSERT INTO ADDRESS(ADDRESS_ID, CITY, POSTAL_CODE, ROAD_NUMBER) " +
-                "VALUES (:addressId, :city, :postal_code, :road_no)",
-                { addressId: addressId, city: city, postal_code: postal_code, road_no: road_no },
+            const result = await connection.execute(
+                "INSERT INTO ADDRESS(CITY, POSTAL_CODE, ROAD_NUMBER,HOME_NUMBER) " +
+                "VALUES ( :city, :postal_code, :road_no , :home_no) RETURNING ADDRESS_ID INTO :newAddressID",
+                {city: city, postal_code: postal_code, road_no: road_no,home_no: home_no },
+                outBindings,
                 { autoCommit: true }
             );
+
+            addressId = result.outBinds.newAddressID[0];
+          
+          
         } else {
            
             addressId = addressQuery.rows[0].ADDRESS_ID;
-        } const result = await connection.execute(
+        }
+         const result = await connection.execute(
             "INSERT INTO PUBLISHER(NAME, EMAIL,  ADDRESS_ID) " +
             "VALUES (:name,::email,:addressId) ",
             { name:name,email:email,addressId: addressId },
