@@ -8,6 +8,17 @@ app.listen(4321);
 const path = require('path');
 app.use(bodyParser.urlencoded({extended:true}));
 app.set('view engine','ejs');
+const session = require('express-session');
+const crypto = require('crypto');
+const secretKey = crypto.randomBytes(32).toString('hex');
+
+app.use(session({
+    secret: secretKey,
+    resave: false,
+    saveUninitialized: false
+}));
+
+
 
 
 connectionModule.initializeConnection();
@@ -102,7 +113,7 @@ app.post('/Batigharlogin', async function (req, res){
       const connection = await connectionModule.getConnection();
     
       const query = await connection.execute(
-        "SELECT PASSWORD FROM CUSTOMER WHERE EMAIL = :email",
+        "SELECT CUSTOMER_ID,PASSWORD FROM CUSTOMER WHERE EMAIL = :email",
         {email : email },
         { outFormat: oracledb.OUT_FORMAT_OBJECT }
 
@@ -116,6 +127,9 @@ app.post('/Batigharlogin', async function (req, res){
     const storedPassword = query.rows[0].PASSWORD;
     
     if(storedPassword === password){
+
+        const customerId = result.rows[0].CUSTOMER_ID;
+        req.session.customerId = customerId;
         res.send('Login Successful');
         //res.render('/homepage.ejs');
     }
@@ -411,7 +425,7 @@ app.get('/addMoreCopies',async function(req,res){
  });
 
  app.post('/addMoreCopies', async function (req,res){
-    const Title = req.body.title;
+    const title = req.body.title;
 
     try {
         const connection = await connectionModule.getConnection();
@@ -420,7 +434,7 @@ app.get('/addMoreCopies',async function(req,res){
         const resultS = await connection.execute(
             "SELECT * FROM BOOK WHERE TITLE = :title ",
             { title: title},
-            { outFormat: oracledb.OUT_FORMAT_OBJECT }
+            { outFormat: oracledb.OUT_FORMAT_OBJECT } 
         );
 
         if (resultS.rows.length === 0) {
@@ -428,6 +442,9 @@ app.get('/addMoreCopies',async function(req,res){
        }
    
      else{
+          
+        const isbn = resultS.rows[0].ISBN;
+
         const result = await connection.execute(
             "SELECT B.*, A.NAME AS AUTHOR_NAME " +
             "FROM AUTHOR A " +
@@ -632,6 +649,282 @@ app.get('/BestSellingBooksOfYear', async (req, res) => {
 
  
  
+
+///customer search
+
+app.get('/customer_section' , async function(req,res){
+    res.render('customer_section');
+});
+
+app.post('/customer_section' , async function(req,res){
+        const nextpage = req.body.next;
+        res.render(nextpage);
+});
+
+app.get('/searchBywriter',async function(req,res){
+      res.render('/searchBYwriter');
+});
+
+app.post('/searchBywriter',async function(req,res){
+    const author =  req.body.author  //author bole ekta search field takbe
+
+
+try {
+    const connection = await connectionModule.getConnection();
+
+    const result = await connection.execute(
+        `SELECT b.*
+        FROM author a
+        JOIN book_author ba ON a.author_id = ba.author_id
+        JOIN book b ON ba.isbn = b.isbn
+        WHERE LOWER(a.name) LIKE '%' || LOWER(:author) || '%';`,
+        { author:author }
+    );
+
+
+
+    if(result.rows.length > 0){
+        const booksOfAuthor = result.rows;
+        res.render('/BooksOfAuthor' , {booksOfAuthor});
+       }
+       else{
+        res.render('/BooksOfAuthor' , {message : 'no book is available of this Author'});
+       }
+    
+   
+} catch (error) {
+    console.error("Error searching for similar names:", error);
+} finally {
+    // Close the connection
+    connectionModule.closeConnection();
+}
+
+
+
+
+});
+
+app.get('searchBytitle',async function(req,res){
+    res.render('searchBytitle');
+});
+
+app.post('searchBytitle',async function(req,res){
+   const title = req.body.title;
+
+   try {
+    const connection = await connectionModule.getConnection();
+
+    const result = await connection.execute(
+        `SELECT *
+        FROM BOOK
+        WHERE LOWER(TITLE) LIKE '%' || LOWER(:title) || '%';`,
+        { title:title }
+    );
+
+
+
+    if(result.rows.length > 0){
+        const BooksWithTitle = result.rows;
+        res.render('/BooksWithTitle' , {BooksWithTitle});
+       }
+       else{
+        res.render('/BooksWithTitle' , {message : 'no book is available with this title'});
+       }
+    
+   
+} catch (error) {
+    console.error("Error searching for book names:", error);
+} finally {
+    // Close the connection
+    connectionModule.closeConnection();
+}
+
+
+
+
+   
+});
+
+app.get('searchBycategory' , async function(req,res){
+    res.render('searchBycategory');
+});
+
+app.post('searchBycategory',async function(req,res){
+
+    const categoryName = req.body.category; 
+
+try {
+    const connection = await connectionModule.getConnection();
+
+    const result = await connection.execute(
+        `SELECT b.*
+         FROM BOOK b
+         JOIN BOOK_CATEGORY bc ON b.ISBN = bc.ISBN
+         JOIN CATEGORY c ON bc.CATEGORY_ID = c.CATEGORY_ID
+         WHERE UPPER(c.NAME) = UPPER(:categoryName)`,
+        { categoryName: categoryName }
+    );
+
+  
+    
+    //console.log("Books in category:", booksInCategory);
+    if(result.rows.length > 0){
+     const booksInCategory = result.rows;
+     res.render('/BookInCategory' , {booksInCategory});
+    }
+    else{
+     res.render('/BookInCategory' , {message : 'no book under this category'});
+    }
+
+} catch (error) {
+    console.error("Error searching for books by category:", error);
+} finally {
+    // Close the connection
+    connectionModule.closeConnection();
+}
+
+
+});
+
+app.get('/searchByPrice', async function(req,res){
+    res.send('/searchByPrice');
+});
+
+app.post('searchByPrice',async function(req,res){
+    const minPrice = req.body.min;
+    const maxPrice = req.body.max; 
+    
+    try {
+        const connection = await connectionModule.getConnection();
+    
+        const result = await connection.execute(
+            `SELECT *
+             FROM BOOK
+             WHERE PRICE BETWEEN :minPrice AND :maxPrice`,
+            { minPrice: minPrice, maxPrice: maxPrice }
+        );
+    
+        const booksInPriceRange = result.rows;
+        
+       // console.log("Books in price range:", booksInPriceRange);
+       if(result.rows.length){
+       res.render('BookInPrice', {booksInPriceRange});
+       }else{
+        res.render('BookInPrice', {message : 'no book between this price'});
+       }
+    } catch (error) {
+        console.error("Error searching for books by price range:", error);
+    } finally {
+        // Close the connection
+        connectionModule.closeConnection();
+    }
+    
+});
+
+
+// Implement a route for displaying book details
+app.get('/bookDetailsforcustomer/:isbn', async (req, res) => {
+    const isbn = req.params.isbn;
+
+    try {
+        const connection = await connectionModule.getConnection();
+
+        // Query the database to get the details of the book
+        const result = await connection.execute(
+            "SELECT * FROM BOOK WHERE ISBN = :isbn",
+            { isbn: isbn }
+        );
+
+        if (result.rows.length > 0) {
+            const book = result.rows[0];
+            res.render('bookDetailsforcustomer', { book });
+        } else {
+            res.status(404).send('Book not found');
+        }
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('Error fetching book details');
+    } finally {
+        connectionModule.closeConnection();
+    }
+});
+
+
+
+// Modify the form for writing a review
+app.get('/WriteReview/:isbn', async (req, res) => {
+    const isbn = req.params.isbn;
+    res.render('WriteReview', { isbn });
+});
+
+
+app.post('/WriteReview', async function(req,res){
+    const isbn = req.body.isbn;
+    const customerId = req.session.customerId; 
+    const reviewContent = req.body.reviewContent;
+    const ranting = req.body.ranting;
+
+    try {
+        const connection = await connectionModule.getConnection();
+
+        // Insert the review into the database
+        await connection.execute(
+            "INSERT INTO REVIEW (ISBN, CUSTOMER_ID, REVIEW_BODY,RANTING) VALUES (:isbn, :customerId, :reviewContent,:ranting)",
+            { isbn: isbn, customerId: customerId, reviewContent: reviewContent,ranting:ranting }
+        );
+
+        res.redirect('/bookDetailsforcustomer/' + isbn);
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('Error submitting review');
+    } finally {
+        connectionModule.closeConnection();
+    }
+});
+
+
+
+//read review
+
+app.get('/SeeReviews/:isbn',async function(req,res){
+    
+    const isbn = req.params.isbn;
+
+    try {
+        const connection = await connectionModule.getConnection();
+
+        const result = await connection.execute(
+            `SELECT R.*
+             FROM REVIEW R
+             JOIN BOOK B ON R.ISBN = B.ISBN
+             WHERE B.ISBN = :isbn`,
+            {isbn : isbn}
+          );
+
+       if(result.rows.length){
+         const reviews = result.rows;
+         res.render('SeeReviews',{reviews});
+       }else{
+        res.render('SeeReviews',{message : 'no reviews given yet'});
+    }
+
+
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('Error submitting review');
+    } finally {
+        connectionModule.closeConnection();
+    }
+
+ 
+
+  
+});
+
+
+
+
+
 
  
 
