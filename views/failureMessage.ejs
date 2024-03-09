@@ -1,0 +1,100 @@
+<!-- promo.ejs -->
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Promo Details</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <!-- Custom CSS -->
+    <style>
+        body {
+            background-color: #f8f9fa;
+            font-family: Arial, sans-serif;
+            background-image: url(https://png.pngtree.com/thumb_back/fw800/back_our/20190621/ourmid/pngtree-world-book-day-423-charity-banner-image_190996.jpg);
+            background-size: cover;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 100px auto;
+        }
+
+        .card {
+            border: none;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .card-header {
+            background-color: #007bff;
+            color: #fff;
+            border-radius: 10px 10px 0 0;
+        }
+
+        .card-body {
+            padding: 20px;
+        }
+
+        .promo-code {
+            font-size: 24px;
+            margin-bottom: 10px;
+            color: #007bff;
+        }
+
+        .discount {
+            font-size: 18px;
+            margin-bottom: 20px;
+        }
+
+        .alert {
+            margin-top: 20px;
+        }
+
+        /* Custom styles for centered box */
+        .centered-box {
+            text-align: center;
+            margin-top: 20px;
+            padding: 10px;
+           
+            border-radius: 5px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+      
+            <div class="card">
+                <div class="card-header">
+                SORRY
+                </div>
+                <div class="card-body">
+                    <p class="promo-code"><strong><%=message%></strong> </p>
+                
+                </div>
+            </div>
+        
+            <div class="centered-box">
+                <a href="/homepage" class="btn btn-primary">go home</a>
+            </div>
+        
+        <div class="centered-box">
+            <a href="/BrowseProduct" class="btn btn-primary">explore shop</a>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <!-- Custom JS -->
+    <script>
+        // Add your custom JavaScript here
+    </script>
+</body>
+
+</html>

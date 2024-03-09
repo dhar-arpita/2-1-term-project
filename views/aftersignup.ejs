@@ -3,14 +3,31 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Include Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
     <title>Confirmation</title>
 </head>
-<body>
-    <h1>Customer Signup Successful</h1>
-    <p>Do you want to go to the login page or homepage?</p>
-    <form action="/redirectingto" method="post">
-        <button type="submit" name="redirectTo" value="/Batigharlogin">Login Page</button>
-        <button type="submit" name="redirectTo" value="/homepage">Homepage</button>
-    </form>
+<body class="bg-light text-center">
+
+    <div class="container mt-5">
+        <br>
+        <br>
+        <br>
+        <br>
+        <h3 class="text-success">Customer Signup Successful</h3>
+        <br>
+        <br>
+        <p class="lead">Do you want to go to the login page or homepage?</p>
+        <form action="/redirectingto" method="post" class="mt-3">
+            <button type="submit" name="redirectTo" value="/Batigharlogin" class="btn btn-primary mr-2">Login Page</button>
+            <button type="submit" name="redirectTo" value="/homepage" class="btn btn-info">Homepage</button>
+        </form>
+    </div>
+
+    <!-- Include Bootstrap JS, jQuery, and Popper.js -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+
 </body>
 </html>

@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Write Review</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        /* Center the content */
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-image: url(https://img.freepik.com/free-photo/top-view-books-with-copy-space_23-2148827187.jpg);
+            background-size: cover;
+        }
+        .review-form {
+            width: 80%; /* Wider width */
+            padding: 20px;
+            background-color:transparent;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.1);
+            margin-left: 300px;
+        }
+        .review-form label {
+            font-weight: bold;
+        }
+        .stars {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 15px;
+        }
+        .star {
+            font-size: 30px;
+            color: #ccc;
+            cursor: pointer;
+            transition: color 0.3s;
+            margin-right: 5px; /* Add some spacing between stars */
+        }
+        .star.checked {
+            color: #ffc107; /* Yellow color for checked stars */
+        }
+        .review-form .review-container {
+            margin-bottom: 15px;
+        }
+        .review-form .review-container label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        .review-form .review-container textarea {
+            width: 100%;
+            padding: 8px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            box-sizing: border-box;
+            height: 150px; /* Adjust the height as needed */
+            font-size: 16px; /* Adjust the font size as needed */
+        }
+        .review-form button[type="submit"] {
+            width: 100%;
+            padding: 10px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .review-form button[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <div class="review-form">
+                    <h1 class="text-center">Write a Review</h1>
+                    <form id="reviewForm">
+                        <input type="hidden" name="isbn" value="<%= isbn %>">
+                        <input type="hidden" name="rating" id="rating"> <!-- Add this hidden input field for rating -->
+                        <div class="card">
+                            <br />
+                            <div class="stars">
+                                <span onclick="rateBook(1)" class="star">★</span>
+                                <span onclick="rateBook(2)" class="star">★</span>
+                                <span onclick="rateBook(3)" class="star">★</span>
+                                <span onclick="rateBook(4)" class="star">★</span>
+                                <span onclick="rateBook(5)" class="star">★</span>
+                            </div>
+                        </div>
+                        <!-- Review container -->
+                        <div class="form-group review-container">
+                            <label for="reviewContent">Review:</label>
+                            <textarea class="form-control" id="reviewContent" name="reviewContent" rows="5" placeholder="share your Experience"></textarea>
+                        </div>
+                        <button type="button" onclick="submitReview()" class="btn btn-primary">Submit Review</button>
+                    </form>
+                    <a href="/bookDetailsforcustomer/<%= isbn %>" class="mt-3 d-block text-center">Give Star</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="successModal" tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="successModalLabel">Review Submitted Successfully</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    Thank you for your review.
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+ 
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  
+    <script>
+        function rateBook(rating) {
+            const stars = document.querySelectorAll('.star');
+            stars.forEach((star, index) => {
+                if (index < rating) {
+                    star.classList.add('checked');
+                } else {
+                    star.classList.remove('checked');
+                }
+            });
+            document.getElementById('rating').value = rating;
+        }
+    
+        function submitReview() {
+            const reviewContent = document.getElementById('reviewContent').value;
+            const rating = document.getElementById('rating').value;
+            const isbn = "<%= isbn %>";
+            const formData = `reviewContent=${encodeURIComponent(reviewContent)}&rating=${rating}&isbn=${isbn}`;
+    
+            const xhr = new XMLHttpRequest();
+            xhr.open('POST', '/WriteReview/' + isbn);
+            xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === XMLHttpRequest.DONE) {
+    
+                    $('#successModal').modal('show');
+                }
+            };
+            xhr.send(formData);
+        }
+    </script>
+    
+</body>
+</html>

@@ -1,55 +1,169 @@
-
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Add Copies</title>
-    <link rel="stylesheet" href="/styles.css">
+    <!-- Include Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <style>
+        body {
+            font-size: 14px;
+        }
+
+        .container {
+            max-width: 600px;
+        }
+
+        .colorful-text {
+            color: #1c6003; /* You can change the color code */
+        }
+    </style>
 </head>
-<body>
-    <h1>Add book details</h1>
+<body class="bg-light">
+    <div class="container mt-5">
+        <h2 class="text-center colorful-text">Add Book Details</h2>
+
+        <form action="" method="post">
+
+            <div class="form-group">
+                <label for="isbn" class="colorful-text">ISBN:</label>
+                <input type="text" name="isbn" class="form-control" placeholder="Enter ISBN" required>
+            </div>
+
+            <div class="form-group">
+                <label for="title" class="colorful-text">Title:</label>
+                <input type="text" name="title" class="form-control" placeholder="Enter TITLE" required>
+            </div>
+
+            <div class="form-group">
+                <label for="Publicationyear" class="colorful-text">Publication Year:</label>
+                <input type="text" name="Publicationyear" class="form-control" placeholder="Enter Publication Year" required>
+            </div>
+
+            <div class="form-group">
+                <label for="Language" class="colorful-text">Language:</label>
+                <input type="text" name="Language" class="form-control" placeholder="Enter Language" required>
+            </div>
+
+            <div class="form-group">
+                <label for="dimension" class="colorful-text">Dimension:</label>
+                <input type="text" name="dimension" class="form-control" placeholder="Enter Dimension" required>
+            </div>
+
+            <div class="form-group">
+                <label for="weight" class="colorful-text">Weight:</label>
+                <input type="number" name="weight" class="form-control" placeholder="Enter Weight" required>
+            </div>
+
+            <div class="form-group">
+                <label for="stocks" class="colorful-text">Stocks:</label>
+                <input type="number" name="stocks" class="form-control" placeholder="Enter stocks" required>
+            </div>
+
+            <div class="form-group">
+                <label for="price" class="colorful-text">Price:</label>
+                <input type="number" name="price" class="form-control" placeholder="Enter price" required>
+            </div>
+
+            <div class="form-group">
+                <label for="edition" class="colorful-text">Edition:</label>
+                <input type="number" name="edition" class="form-control" placeholder="Enter edition" required>
+            </div>
+
+            <div class="form-group">
+                <label for="newCategoryInput" class="colorful-text">New Category:</label>
+                <input type="text" id="newCategoryInput" class="form-control" placeholder="Enter New Category">
+            </div>
+            <button id="addCategoryBtn" class="btn btn-primary">Add Category</button>
+
+            <!-- Select element for categories -->
+            <div class="form-group">
+                <label for="category" class="colorful-text"><strong>Category:</strong></label>
+                <select id="category" name="category[]" multiple class="form-control">
+                    <!-- Existing categories will be added dynamically here -->
+                </select>
+            </div>
+
+            <!-- Input field for adding authors -->
+            <div class="form-group">
+                <label for="newAuthorInput" class="colorful-text">New Author:</label>
+                <input type="text" id="newAuthorInput" class="form-control" placeholder="Enter New Author">
+            </div>
+            <button id="addAuthorBtn" class="btn btn-primary">Add Author</button>
+
+            <!-- Select element for authors -->
+            <div class="form-group">
+                <label for="authors" class="colorful-text"><strong>Authors:</strong></label>
+                <select id="authors" name="authors[]" multiple class="form-control">
+                    <!-- Existing authors will be added dynamically here -->
+                </select>
+            </div>
 
 
-    <form action="" method="post">
-     <input type = "text" name = "isbn" placeholder="Enter ISBN"><br><br>
-    <input type = "name" name = "title" placeholder="Enter TITLE"><br><br>
-    <input type="text" name="Publicationyear" placeholder="Enter Publication Year"><br><br>
-    <input type="text" name="Language" placeholder="Enter Language"><br><br>
-    <input type="text" name="dimension" placeholder="Enter Dimension"><br><br>
-    <input type="number" name="weight" placeholder="Enter Weight"><br><br>
-    <input type="number" name="stocks" placeholder="Enter stocks"><br><br>
-    <input type="number" name="price" placeholder="Enter price"><br><br>
-    <input type = "number" name = "edition" placeholder = "Enter edition"><br><br>
-
-
-    <div>
-        <label for="category"><strong>Category:</strong></label>
-        <select id="category" name="category[]" multiple>
-            <% categories.forEach(category => { %>
-                <option value="<%= category.CATEGORY_ID %>">Category.NAME</option>
-            <% }); %>
-        </select>
+            <div class="d-flex justify-content-between align-items-center">
+                <button type="submit" class="btn btn-success colorful-text">Add Copies</button>
+                <a href="/AdminSection" class="btn btn-secondary colorful-text">Back to Section</a>
+            </div>
+        </form>
     </div>
 
-
-        <div>
-            <label for="authors"><strong>Authors:</strong></label>
-            <select id="authors" name="authors[]" multiple>
-                <% authors.forEach(author => { %>
-                    <option value="<%= author.AUTHOR_ID %>">author.NAME</option>
-                <% }); %>
-            </select>
-        </div>
-
-        <button type="submit">Add Copies</button>
-    </form>
-
-    <a href="/AdminSection">Back to Section</a>
+    <!-- Include Bootstrap JS, jQuery, and Popper.js -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
 
     <script>
-        // Add any additional client-side scripting if needed
+        document.addEventListener('DOMContentLoaded', function () {
+            // Function to add a new category
+            var addCategoryBtn = document.getElementById('addCategoryBtn');
+            var categorySelect = document.getElementById('category');
+
+            addCategoryBtn.addEventListener('click', function () {
+                var newCategoryInput = document.getElementById('newCategoryInput');
+                var newCategoryName = newCategoryInput.value.trim();
+
+                if (newCategoryName) {
+                    // Create a new option element
+                    var newOption = document.createElement('option');
+                    newOption.value = newCategoryName;
+                    newOption.textContent = newCategoryName;
+
+                    // Add the new option to the select element
+                    categorySelect.appendChild(newOption);
+
+                    // Clear the input field
+                    newCategoryInput.value = '';
+                } else {
+                    alert('Please enter a category name');
+                }
+            });
+
+            // Function to add a new author
+            var addAuthorBtn = document.getElementById('addAuthorBtn');
+            var authorsSelect = document.getElementById('authors');
+
+            addAuthorBtn.addEventListener('click', function () {
+                var newAuthorInput = document.getElementById('newAuthorInput');
+                var newAuthorName = newAuthorInput.value.trim();
+
+                if (newAuthorName) {
+                    // Create a new option element
+                    var newOption = document.createElement('option');
+                    newOption.value = newAuthorName;
+                    newOption.textContent = newAuthorName;
+
+                    // Add the new option to the select element
+                    authorsSelect.appendChild(newOption);
+
+                    // Clear the input field
+                    newAuthorInput.value = '';
+                } else {
+                    alert('Please enter an author name');
+                }
+            });
+        });
     </script>
 </body>
+
 </html>

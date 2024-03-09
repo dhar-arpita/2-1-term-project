@@ -1,18 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Include Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <title>Batighar Signup</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: wheat;
+            background-image: url(https://cdn5.vectorstock.com/i/1000x1000/05/54/woman-reading-book-vector-34250554.jpg);
+            color: #333;
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center;
+            margin: 0;
+            padding: 0;
+            margin-left: 10px; 
+        }
 
-<h1>Welcome to Batighar</h1>
-<h3>Sign Up form</h3>
+        .form-control {
+            margin-top: 5px;
+        width: 50%; /* Adjust width as needed */
+        margin: 5px auto; /* Center-align and add spacing */
+    }
 
-<form action="" method="post">
-    <input type="name" name="fname" placeholder="Enter first name"><br><br>
-    <input type = "name" name = "lname" placeholder="Enter last_name"><br><br>
-    <input type="email" name="Email" placeholder="Enter Email"><br><br>
-    <input type="text" name="MobileNo" placeholder="Enter mobile no"><br><br>
-    <input type="date" name="BirthDate" placeholder="Enter your birthdate"><br><br>
-    <input type="password" name="password" placeholder="Enter password"><br><br>
-    <input type="text" name="City" placeholder="Enter city"><br><br>
-    <input type="text" name="PostalCode" placeholder="Enter postal code"><br><br>
-    <input type="text" name="RoadNo" placeholder="Enter road no"><br><br>
-    <input type="text" name="HomeNo" placeholder="Enter home no"><br><br>
+    .container {
+            margin-top: 5px;
+            margin-left: 0; /* Adjust margin-left to move the container to the left */
+            max-width: 50%; /* Remove max-width to allow the container to expand */
+        }
+    </style>
+</head>
+<body class="bg-light text-center">
 
-    <input type="submit" value="Submit">
-</form>
+    <div class="container mt-5">
+        <h1 class="text-primary">Welcome to Batighar</h1>
+        <h3 class="mb-4">Sign Up Form</h3>
+
+        <form action="" method="post">
+            <div class="form-group">
+                <input type="text" name="fname" class="form-control" placeholder="First Name" required>
+            </div>
+            <div class="form-group">
+                <input type="text" name="lname" class="form-control" placeholder="Last Name" required>
+            </div>
+            <div class="form-group">
+                <input type="email" name="Email" class="form-control" placeholder="Email" required>
+            </div>
+            <div class="form-group">
+                <input type="text" name="MobileNo" class="form-control" placeholder="Mobile No" required>
+            </div>
+            <div class="form-group">
+                <input type="date" name="BirthDate" class="form-control" placeholder="Birthdate" required>
+            </div>
+            <div class="form-group">
+                <input type="password" name="password" class="form-control" placeholder="Password" required>
+            </div>
+            <div class="form-group">
+                <input type="text" name="City" class="form-control" placeholder="City" required>
+            </div>
+            <div class="form-group">
+                <input type="text" name="PostalCode" class="form-control" placeholder="Postal Code" required>
+            </div>
+            <div class="form-group">
+                <input type="text" name="RoadNo" class="form-control" placeholder="Road Number" required>
+            </div>
+            <div class="form-group">
+                <input type="text" name="HomeNo" class="form-control" placeholder="Home Number" required>
+            </div>
+            <div class="form-group">
+                <a href = '/Batigharlogin'>Already have a account? Log In now</a>
+            </div>
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+    </div>
+
+    <!-- Include Bootstrap JS, jQuery, and Popper.js -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+
+</body>
+</html>

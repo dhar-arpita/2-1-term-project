@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+
+    <!-- Bootstrap CSS -->
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
+      integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+      crossorigin="anonymous"
+    />
+
+
+    <script
+      src="https://code.jquery.com/jquery-3.6.0.min.js"
+      integrity="sha256-u7e5khyithlIdTpu22PHhENmPcRdFiHRjhAuHcs05RI="
+      crossorigin="anonymous"
+    ></script>
+
+    <title>Batighar - Your most reliable book shop</title>
+  </head>
+  <body>
+
+    <div class="modal fade" id="messageModal" tabindex="-1" role="dialog" aria-labelledby="messageModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="messageModalLabel" style="color: rgb(23, 0, 100);">Message</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <p id="messageText" style="color: blue;"></p>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-primary" data-dismiss="modal">OK</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- <h1>Hello, world!</h1> -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+      <a class="navbar-brand" href="#">BatigharOnline</a>
+      <button
+        class="navbar-toggler"
+        type="button"
+        data-toggle="collapse"
+        data-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+      >
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/about">About</a>
+          </li>
+
+         
+          <li class="nav-item active">
+            <a class="nav-link" href="/Batigharlogin">login</a>
+          </li>
+          
+          <li class="nav-item active">
+            <a class="nav-link" href="/Batigharsignup">Signup</a>
+          </li>
+
+          <li class="nav-item active">
+            <a class="nav-link" href="/Admin">Admin</a>
+          </li>
+         
+         
+          <li class="nav-item">
+            <a class="nav-link" href="/contact2">Contact Us</a>
+          </li>
+          
+          
+        </ul>
+      </div>
+    </nav>
+    <div
+      id="carouselExampleIndicators"
+      class="carousel slide"
+      data-ride="carousel"
+    >
+      <ol class="carousel-indicators">
+        <li
+          data-target="#carouselExampleIndicators"
+          data-slide-to="0"
+          class="active"
+        ></li>
+        <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
+        <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
+      </ol>
+      <div class="carousel-inner">
+        <div class="carousel-item active">
+          <img
+          class="d-block w-100"
+          src="https://www.groovypost.com/wp-content/uploads/2022/04/Book-Featured.png"
+            
+            alt="First slide"
+          />
+          <div class="carousel-caption d-none d-md-block">
+            <br><br>
+            <h3 style="color: wheat">Welcome to BatigharOnline</h3>
+            <p style="color:whitesmoke;">Quench your thirst for knowledge
+            </p>
+            
+          </div>
+        </div>
+        <div class="carousel-item">
+          <img
+            class="d-block w-98"
+            src="https://wallpapers.com/images/hd/smartphone-aesthetic-book-desktop-0iek0oopgox74mmb.jpg"
+            alt="Second slide"
+          />
+          <div class="carousel-caption d-none d-md-block">
+            <br><br>
+            <h3 style="color:white;">Welcome to Batighar</h3>
+            
+              <p style="color: white;">Explore in a world of Book.</p>
+            <p style="color:white;"> Create a new account now!</p>
+            
+          </div>
+        </div>
+        <div class="carousel-item">
+          <img
+          class="d-block w-100"
+          
+          src="https://images.unsplash.com/photo-1604361709763-44f7fc6dd075?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+            alt="Third slide"
+          />
+          <div class="carousel-caption d-none d-md-block">
+            <br><br>
+            <h3 style="color : whitesmoke">Welcome to Batighar</h3>
+            <p style="color:wheat;">Browse through our listings and experience the verse of knowledge.
+            </p>
+            
+          </div>
+        </div>
+
+      </div>
+      <a
+        class="carousel-control-prev"
+        href="#carouselExampleIndicators"
+        role="button"
+        data-slide="prev"
+      >
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="sr-only">Previous</span>
+      </a>
+      <a
+        class="carousel-control-next"
+        href="#carouselExampleIndicators"
+        role="button"
+        data-slide="next"
+      >
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="sr-only">Next</span>
+      </a>
+    </div> 
+    <div class="containter my-4 mx-4">
+      <div class="row mb-2">
+        <div class="col-md-6">
+          <div class="card flex-md-row mb-4 box-shadow h-md-250">
+            <div class="card-body d-flex flex-column align-items-start">
+              <strong class="d-inline-block mb-2 text-primary">World</strong>
+              <h3 class="mb-0">
+                <a class="text-dark" href="#">Featured post</a>
+              </h3>
+              <div class="mb-1 text-muted">Come Quick</div>
+              <p class="card-text mb-auto">
+                It's exciting.Buy your book at a very resonable prize!.
+              </p>
+              <a href="/shop">Explore in the world of book</a>
+            </div>
+            <img
+              class="card-img-right flex-auto d-none d-md-block"
+              data-src="holder.js/200x250?theme=thumb"
+              alt="Thumbnail [200x250]"
+              src="https://previews.agefotostock.com/previewimage/medibigoff/e399d35e25288335eacb30f6299013fc/wr3670242.jpg"
+              data-holder-rendered="true"
+              style="width: 400px; height: 250px"
+            />
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="card flex-md-row mb-4 box-shadow h-md-250">
+            <div class="card-body d-flex flex-column align-items-start">
+              <strong class="d-inline-block mb-2 text-success">Design</strong>
+              <h3 class="mb-0">
+                <a class="text-dark" href="/aboutus">We care about you</a>
+              </h3>
+              <div class="mb-1 text-muted">Nov 11</div>
+              <p class="card-text mb-auto">
+              See our activity and share your experience with us!
+              </p>
+              <a href="/aboutus">Know About Us</a>
+            </div>
+            <img
+              class="card-img-right flex-auto d-none d-md-block"
+              data-src="holder.js/200x250?theme=thumb"
+              alt="Thumbnail [200x250]"
+              src="https://previews.agefotostock.com/previewimage/medibigoff/71b865aa699c82d9146ffb99de96aa3e/wr3295808.jpg"
+              data-holder-rendered="true"
+              style="width: 400px; height: 250px"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="containter my-4 mx-4">
+      <div class="row mb-2">
+        <div class="col-md-6">
+          <div class="card flex-md-row mb-4 box-shadow h-md-250">
+            <div class="card-body d-flex flex-column align-items-start">
+              <strong class="d-inline-block mb-2 text-primary">World</strong>
+              <h3 class="mb-0">
+                <a class="text-dark" href="/Batigharlogin">Featured post</a>
+              </h3>
+              <div class="mb-1 text-muted">To order book,Log in first</div>
+              <p class="card-text mb-auto">
+                Book is your only best friend!!!
+              </p>
+              <a href="/Batigharlogin">Log In</a>
+            </div>
+            <img
+              class="card-img-right flex-auto d-none d-md-block"
+              data-src="holder.js/200x250?theme=thumb"
+              alt="Thumbnail [200x250]"
+              src="https://media.gettyimages.com/id/168267610/photo/library-bookshelves-filled-with-rows-of-books.jpg?s=1024x1024&w=gi&k=20&c=ZxWAxcacsBjJws8fzitNpvi11d949CiQdVL3MoyndQ4="
+              data-holder-rendered="true"
+              style="width: 400px; height: 250px"
+            />
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="card flex-md-row mb-4 box-shadow h-md-250">
+            <div class="card-body d-flex flex-column align-items-start">
+              <strong class="d-inline-block mb-2 text-success">Design</strong>
+              <h3 class="mb-0">
+                <a class="text-dark" href="#">Hey! there</a>
+              </h3>
+              <div class="mb-1 text-muted">Latest</div>
+              <p class="card-text mb-auto">
+                creating a account is super easy.Create a account soon and start your journey with us.
+              </p>
+              <a href="/Batigharsignup">Create a account</a>
+            </div>
+            <img
+              class="card-img-right flex-auto d-none d-md-block"
+              data-src="holder.js/200x250?theme=thumb"
+              alt="Thumbnail [200x250]"
+              src="https://media.gettyimages.com/id/902326126/photo/home-moments.jpg?s=2048x2048&w=gi&k=20&c=-Ig79Y63njWyCCJhllG1M8vaUcbKYxb3C7JZ4EgdCo0="
+              data-holder-rendered="true"
+              style="width: 400px; height: 250px"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+    <img src="c:\Users\User\Downloads\neom-WZCMd9K-sHY-unsplash.jpg" alt="" class="src">
+
+    <div class="modal fade" id="messageModal" tabindex="-1" role="dialog" aria-labelledby="messageModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="messageModalLabel">Message</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <p id="messageText"></p>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-primary" data-dismiss="modal">OK</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    
+   
+   
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script
+      src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+      integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js"
+      integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"
+      integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+      crossorigin="anonymous"
+    ></script>
+
+
+    <script>
+      // Function to display the message if it exists
+      function showMessage(message) {
+        if (message) {
+          $('#messageText').text(message); // Set the message text
+          $('#messageModal').modal('show'); // Show the modal
+        }
+      }
+
+      // Example usage:
+      // Call showMessage function with your message
+      var message = '<%= typeof message !== "undefined" ? message : "" %>'; // Your message here
+      showMessage(message);
+    </script>
+  </body>
+</html>

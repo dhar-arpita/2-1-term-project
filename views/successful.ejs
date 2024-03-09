@@ -1,0 +1,106 @@
+<!-- promo.ejs -->
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Promo Details</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <!-- Custom CSS -->
+    <style>
+        body {
+            background-color: #f8f9fa;
+            font-family: Arial, sans-serif;
+            background-image: url(https://wallpapers.com/images/hd/simple-zoom-background-g1inww3b6acwu9t8.jpg);
+            background-size: cover;
+            
+
+        }
+
+        .container {
+            max-width: 500px;
+            margin: 100px auto;
+            margin-top: 430px;
+            margin-left: 400px;
+        }
+
+        .card {
+            border: none;
+            max-height: 500px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+        }
+
+        .card-header {
+            background-color: burlywood;
+            color:black;
+            border-radius: 10px 10px 0 0;
+        }
+
+        .card-body {
+            padding: 20px;
+        }
+
+        .promo-code {
+            font-size: 24px;
+            margin-bottom: 10px;
+            color: wheat;
+        }
+
+        .discount {
+            font-size: 18px;
+            margin-bottom: 20px;
+        }
+
+        .alert {
+            margin-top: 20px;
+        }
+
+        /* Custom styles for centered box */
+        .centered-box {
+            text-align: center;
+            margin-top: 20px;
+            padding: 10px;
+            color: black;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+      
+            <div class="card">
+                <div class="card-header">
+                 Confirmation
+                </div>
+                <div class="card-body">
+ 
+                    <input type="hidden" name="cart_id" value="<%=active_cart %>" required>
+                    <a href = "/Confirm/<%=active_cart %>" class = "btn btn-primary" style="background-color:wheat;color: black;">Confirm the Card</a>
+                
+                </div>
+            </div>
+        
+            
+        
+        <div class="centered-box">
+            <a href="/BrowseProduct" class="btn btn-primary" style="background-color:wheat;color: black;">Go back</a>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <!-- Custom JS -->
+    <script>
+        // Add your custom JavaScript here
+    </script>
+</body>
+
+</html>

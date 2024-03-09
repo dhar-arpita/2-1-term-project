@@ -1,0 +1,33 @@
+<!-- bookInCategory.ejs -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Books in Category</title>
+    <!-- Add your CSS link here -->
+    <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+    <h1>Books Of this Author</h1>
+    <% if (booksOfAuthor.length > 0) { %>
+        <div class="book-container">
+            <% booksOfAuthor.forEach(book => { %>
+                <div class="book">
+                    <!-- Make Book Cover Clickable -->
+                    <a href="/bookDetailsforcustomer/<%= book.ISBN %>">
+                        <img src="<%= book.COVER_PHOTO %>" alt="<%= book.TITLE %>">
+                    </a>
+                    <h3><%= book.TITLE %></h3>
+                    <p><%= book.PRICE %></p>
+                    <!-- Render other book details as needed -->
+                </div>
+            <% }); %>
+        </div>
+    <% } else { %>
+        <p>No book of this Author</p>
+    <% } %>
+    <!-- Add your footer or other content here -->
+</body>
+</html>

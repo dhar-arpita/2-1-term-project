@@ -1,5 +1,3 @@
-
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,73 +5,166 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Book Details</title>
     <link rel="stylesheet" href="/styles.css">
+
+    <style>
+        body {
+            background-image: url(https://w0.peakpx.com/wallpaper/559/184/HD-wallpaper-books-aesthetics-reading.jpg);
+            background-size: cover;
+            font-family: Arial, sans-serif;
+            color: #333;
+        }
+
+        .book-details-container {
+            max-width: 600px;
+            margin-left: 500px;
+          
+            background-color: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.1);
+        }
+
+        .book-details {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+        }
+
+        .book-image {
+            width: 200px;
+            height: auto;
+            border: 2px solid #333;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+
+        .book-details div {
+            flex: 0 0 48%;
+            margin-bottom: 20px;
+        }
+
+        label {
+            font-weight: bold;
+            margin-bottom: 5px;
+            display: block;
+        }
+
+        input[type="text"],
+        input[type="number"] {
+            width: 100%;
+            padding: 8px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            box-sizing: border-box;
+        }
+
+        button[type="submit"] {
+            width: 100%;
+            padding: 10px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        button[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+
+        a {
+            display: block;
+            text-align: center;
+            margin-top: 20px;
+            color: #007bff;
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
 </head>
 <body>
-    <h1>Book Details</h1>
+    <h1 style="text-align: center; color: #333;">Book Details</h1>
 
-    <form action="" method="post">
-        <div>
-            <label for="isbn"><strong>ISBN:</strong></label>
-            <input type="text" id="isbn" name="isbn" value="<%= book.ISBN %>" readonly>
-        </div>
+    <form action="/bookDetails" method="post">
+        <div class="book-details-container">
+            <div class="book-details">
+                <div>
+                    <label><strong>ISBN:</strong></label>
+                    <div><%= book.isbn %></div>
+                </div>
+                
+                <div>
+                    <label><strong>Title:</strong></label>
+                    <input type="text" name="Title" value="<%= book.title %>" required>
+                </div>
+                <div>
+                    <label><strong>Edition:</strong></label>
+                    <div><%= book.edition %></div>
+                </div>
+                <div>
+                    <label><strong>Weight:</strong></label>
+                    <div><%= book.weight %></div>
+                </div>
         
-        <div>
-            <label for="title"><strong>Title:</strong></label>
-            <input type="text" id="title" name="title" value="<%= book.title %>" readonly>
-        </div>
-        <div>
-            <label for="Edition"><strong>Edition:</strong></label>
-            <input type="number" id="Edition" name="Edition" value="<%= book.EDITION%>" readonly>
-        </div>
-        <div>
-            <label for="Weight"><strong>Weight:</strong></label>
-            <input type="text" id="weight" name="weight" value="<%= book.WEIGHT %>" readonly>
-        </div>
+                <div>
+                    <label><strong>PUBLICATION_YEAR:</strong></label>
+                    <div><%= book.publication_year %></div>
+                </div>
+        
+                <div>
+                    <label><strong>Dimension:</strong></label>
+                    <div><%= book.dimension %></div>
+                </div>
+        
+        
+                <div>
+                    <label><strong>Language:</strong></label>
+                    <div><%= book.language %></div>
+                </div>
 
-        <div>
-            <label for="publicationyear"><strong>PUBLICATION_YEAR:</strong></label>
-            <input type="number" id="publicationyear" name="publicationyear" value="<%= book.PUBLICATION_YEAR %>" readonly>
-        </div>
+                <div>
+                    <label><strong>Photo:</strong></label>
+                    <img src="<%= book.photo %>" alt="Book Photo" class="book-image">
+                </div>
+               
+                <div>
+                    <label><strong>Stocks:</strong></label>
+                    <input type="number" name="Stocks" value="<%= book.stock %>" required>
+                </div>
+        
+                <div>
+                    <label><strong>Price:</strong></label>
+                    <input type="number" name="Price" value="<%= book.price.toFixed(2) %>" required>
+                </div>
+               
+                <div>
+                    <p><strong>Authors:</strong></p>
+                    <ul>
+                        <% book.authors.forEach(author => { %>
+                            <li><%= author.AUTHOR_NAME %></li>
+                        <% }); %>
+                    </ul>
+                </div>
+            </div>
 
-        <div>
-            <label for="Dimension"><strong>Dimension:</strong></label>
-            <input type="text" id="Dimension" name="dimension" value="<%= book.DIMENSION %>" readonly>
+            <div>
+                <label><strong>Categories:</strong></label>
+                <ul>
+                    <% book.categories.forEach(category => { %>
+                        <li><%= category.CATEGORYNAME %></li>
+                    <% }); %>
+                </ul>
+            </div>
+        
+            <button type="submit">Submit Update</button>
+            <a href="/AdminSection">Back to Admin section</a>
         </div>
-
-        <div>
-            <label for="category"><strong>Category:</strong></label>
-            <input type="text" id="category" name="category" value="<%= book.category %>" readonly>
-        </div>
-
-        <div>
-            <label for="language"><strong>Language:</strong></label>
-            <input type="text" id="author" name="author" value="<%= book.LANGUAGE %>" readonly>
-        </div>
-        <div>
-            <label for="stocks"><strong>Stocks:</strong></label>
-            <input type="number" id="stocks" name="stocks" value="<%= book.stocks %>" required>
-        </div>
-
-        <div>
-            <label for="price"><strong>Price:</strong></label>
-            <input type="number" id="price" name="price" value="<%= book.price %>" required>
-        </div>
-       
-        <div>
-            <p><strong>Authors:</strong></p>
-        <ul>
-            <% book.authors.forEach(author => { %>
-                <li><%= author %></li>
-            <% }); %>
-        </ul>
-        </div>
-
-     
-
-        <button type="submit">Submit Update</button>
     </form>
 
-    <a href="AdminSection">Back to Admin section</a>
-</body
-
-
+    
+</body>
+</html>

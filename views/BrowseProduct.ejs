@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Browse Products</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+
+       body{
+        background-color: bisque;
+
+        }
+        .book {
+    display: inline-block;
+    border: 5cm;
+    border-radius: 6;
+    width: 200px; /* Adjust the width as needed */
+    height: 300px; /* Fixed height for each book box */
+    margin-top: 40px;
+    margin-left : 50px;
+    margin-right: 50px; /* Add margin for spacing between books */
+    margin-bottom: 100px;
+    vertical-align: top; /* Align boxes from the top */
+    box-sizing: border-box; /* Include padding and border in the box's total width and height */
+}
+
+.book h2 {
+    margin-top: 10px; /* Add margin to the top of the book title */
+    font-size: 16px; /* Adjust font size as needed */
+    overflow: hidden; /* Hide overflowing text */
+    white-space: nowrap; /* Prevent text from wrapping */
+    text-overflow: ellipsis; /* Display ellipsis (...) for overflowing text */
+}
+
+@media (max-width: 768px) {
+    .book {
+        width: calc(25% - 20px); /* Adjust width to fit four books per row on smaller screens */
+    }
+}
+        .book img {
+            width: 100%; /* Make sure the image fills the container */
+            height: 250px; /* Maintain aspect ratio */
+        }
+        .navbar-brand {
+            margin-top: 10px;
+            font-weight: bold; /* Make the brand name bold */
+           
+        }
+        .search-bar {
+            margin-right: 10px;
+            color: white; /* Change font color of the search input text to white */
+        }
+        .search-btn {
+            background-color: green; /* Green */
+            border: none;
+            color: white !important; /* Set text color to black */
+            padding: 10px 20px; /* Adjust padding as needed */
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;  /* Adjust font size as needed */
+        }
+    </style>
+</head>
+<body>
+  
+    <nav class="navbar navbar-expand-lg navbar-light bg-primary">
+        <a class="navbar-brand" href="/homepage" style="color: white;">Go home</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <a class="navbar-brand" href="/BrowseProduct" style="color: white;">Browse</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <form class="form-inline my-2 my-lg-0 ml-auto" action="browseByCategory" method="POST">
+                <input class="form-control mr-sm-2 search-bar" type="search" name="title" placeholder="Search by Category" aria-label="Search">
+                <button class="btn btn-outline-success my-2 my-sm-0 search-btn" type="submit">Search</button>
+            </form>
+            <form class="form-inline my-2 my-lg-0 ml-auto" action="/browseByTitle" method="POST">
+                <input class="form-control mr-sm-2 search-bar" type="search" name="title" placeholder="Search by Title" aria-label="Search">
+                <button class="btn btn-outline-success my-2 my-sm-0 search-btn" type="submit">Search</button>
+            </form>
+            <form class="form-inline my-2 my-lg-0 ml-auto" action="/browseByAuthor" method="POST">
+                <input class="form-control mr-sm-2 search-bar" type="search" name="title" placeholder="Search by Author" aria-label="Search">
+                <button class="btn btn-outline-success my-2 my-sm-0 search-btn" type="submit">Search</button>
+            </form>
+        </div>
+    </nav>
+
+    <!-- Book Gallery -->
+    <div class="book-gallery">
+        <% books.forEach(function(book) { %>
+            <div class="book">
+                <a href="/bookDetailsforcustomer/<%= book.ISBN %>"> <!-- Assuming you have a route for individual book details -->
+                    <img src="<%= book.COVER_PHOTO %>" alt="<%= book.TITLE %>">
+                    
+                </a>
+                <h2><%= book.TITLE %></h2>
+                <p>Price : <%=book.PRICE.toFixed(2)%></p>
+           
+
+                <!-- Add more book details as needed -->
+            </div>
+        <% }); %>
+    </div>
+
+    <!-- Bootstrap JS, jQuery, and Popper.js -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

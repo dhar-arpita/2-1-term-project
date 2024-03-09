@@ -1,0 +1,95 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Confirmation</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body{
+            background-image: url(https://img.freepik.com/premium-vector/book-shelf-flat-design-vector_627350-555.jpg);
+            background-size: contain;
+        }
+        /* Custom styling */
+        .modal-dialog {
+            max-width: 800px;
+        }
+
+        /* Center the buttons and modals */
+        .center {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        /* Add margin-top to the Go Back button */
+        .go-back-btn {
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="center">
+        <!-- Button to Confirm Order -->
+        <button type="button" class="btn btn-primary mb-3" data-toggle="modal" data-target="#orderConfirmationModal">
+            Want to confirm??
+        </button>
+
+        <!-- Button to Go Back -->
+        <a href="/BrowseProduct" class="btn btn-secondary go-back-btn">Go Back to Browse Section</a>
+    </div>
+
+    <!-- Order Confirmation Modal -->
+    <div class="modal fade" id="orderConfirmationModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Order Confirmation</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>Are you sure you want to confirm this order?</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary" id="confirmOrderBtn">Confirm Order</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Order Placed Modal -->
+    <div class="modal fade" id="orderPlacedModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Order Placed</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>Your order has been successfully placed.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        // Add click event listener to the Confirm Order button
+        document.getElementById('confirmOrderBtn').addEventListener('click', function() {
+            // Show the Order Placed modal
+            $('#orderPlacedModal').modal('show');
+        });
+    </script>
+</body>
+</html>

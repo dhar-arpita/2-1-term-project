@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Copies</title>
+    <!-- Include Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <style>
+        body {
+            font-size: 14px;
+            background-color: black !important;
+        }
+
+        .container {
+            max-width: 600px;
+        }
+
+        .colorful-text {
+            color:yellow; 
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar navbar-expand-lg navbar-dark bg-warning">
+
+        <a class="navbar-brand" href="/Startpage" style="color: black">Log out</a>
+    
+          <button
+            class="navbar-toggler"
+            type="button"
+            data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent"
+            aria-expanded="false"
+            aria-label="Toggle navigation"
+          >
+            <span class="navbar-toggler-icon"></span>
+          </button>
+    
+          <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+              
+              <li class="nav-item">
+                <a class="nav-link" href="/Profile" style="color: black;">Admin Profile</a>
+              </li>
+             
+              
+              
+            </ul>
+          </div>
+        </nav>
+    
+    <div class="container mt-5">
+        <h2 class="text-center colorful-text">Add Book Details</h2>
+
+        <form action="/addBook" method="post">
+
+            <div class="form-group">
+                <label for="isbn" class="colorful-text">ISBN:</label>
+                <input type="text" name="isbn" class="form-control" placeholder="Enter ISBN" required>
+            </div>
+
+            <div class="form-group">
+                <label for="title" class="colorful-text">Title:</label>
+                <input type="text" name="title" class="form-control" placeholder="Enter TITLE" required>
+            </div>
+
+            <div class="form-group">
+                <label for="Publicationyear" class="colorful-text">Publication Year:</label>
+                <input type="text" name="Publicationyear" class="form-control" placeholder="Enter Publication Year" required>
+            </div>
+
+            <div class="form-group">
+                <label for="language" class="colorful-text">Language:</label>
+                <input type="text" name="language" class="form-control" placeholder="Enter Language" required>
+            </div>
+
+            <div class="form-group">
+                <label for="dimension" class="colorful-text">Dimension:</label>
+                <input type="text" name="dimension" class="form-control" placeholder="Enter Dimension" required>
+            </div>
+
+            <div class="form-group">
+                <label for="weight" class="colorful-text">Weight:</label>
+                <input type="number" name="weight" class="form-control" placeholder="Enter Weight" required>
+            </div>
+
+            <div class="form-group">
+                <label for="publisher_name" class="colorful-text">Publisher Name:</label>
+                <input type="text" name="publisher_name" class="form-control" placeholder="Enter Publisher Name" required>
+            </div>
+
+            <div class="form-group">
+                <label for="stocks" class="colorful-text">Stocks:</label>
+                <input type="number" name="stocks" class="form-control" placeholder="Enter stocks" required>
+            </div>
+
+            <div class="form-group">
+                <label for="price" class="colorful-text">Price:</label>
+                <input type="number" name="price" class="form-control" placeholder="Enter price" required>
+            </div>
+
+            <div class="form-group">
+                <label for="edition" class="colorful-text">Edition:</label>
+                <input type="number" name="edition" class="form-control" placeholder="Enter edition" required>
+            </div>
+
+           
+
+            <div class="form-group">
+                <label for="category" class="colorful-text">Categories:</label>
+                <input type="text" name="category" class="form-control" placeholder="Enter category separeted by comma" required>
+            </div>
+
+            <div class="form-group">
+                <label for="authors" class="colorful-text">Authors:</label>
+                <input type="text" name="authors" class="form-control" placeholder="Enter authors seperated by comma" required>
+            </div>
+
+            <div class="form-group">
+                <label for="cover_photo" class="colorful-text">Cover Photo:</label>
+                <input type="text" name="cover_photo" class="form-control" placeholder="Enter Cover_Photo Link:" required>
+            </div>
+
+
+            <div class="d-flex justify-content-between align-items-center">
+                <button type="submit" class="btn btn-success colorful-text">Add Copies</button>
+                <a href="/AdminSection" class="btn btn-secondary colorful-text">Back to Section</a>
+            </div>
+        </form>
+    </div>
+
+    <!-- Include Bootstrap JS, jQuery, and Popper.js -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+
+    

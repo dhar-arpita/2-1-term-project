@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Include Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    
+    <style>
+        body {
+            background-image: url('https://static.vecteezy.com/system/resources/previews/001/937/589/original/online-education-application-learning-worldwide-on-phone-mobile-website-background-social-distance-concept-the-classroom-training-course-library-illustration-flat-design-vector.jpg');
+            background-size: cover;
+            
+        }
+        .container {
+            max-width: 700px;
+            margin: 0 auto;
+            margin-left: 80px;
+        }
+        .cart-box {
+            background-color: white; /* Semi-transparent white background */
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1); /* Shadow effect */
+            margin-top: 180px;
+            
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <div class="cart-box">
+                    <form action="/addtocart" method="post">
+                        <h2 class="text-center mb-4">Cart Validation</h2>
+
+                        
+               <div class = "form-group">
+                <input type="hidden" name="isbn" value="<%= isbn %>" required>
+                 </div>
+           
+
+                        <div class="form-group">
+                            <label for="copies">Copies:</label>
+                            <input type="number" name="copies" class="form-control" placeholder="Enter how many copy you want" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="promo">Promocode:</label>
+                            <input type="text" name="promo" class="form-control" placeholder="Enter promo if any">
+                        </div>
+
+                        <div class="text-center">
+                            <button type="submit" class="btn btn-primary">Submit</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Include Bootstrap JS, jQuery, and Popper.js -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+
+
+   
+</body>
+</html>

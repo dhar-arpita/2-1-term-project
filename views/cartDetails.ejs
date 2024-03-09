@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Browse Products</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+
+       body{
+        background-color: bisque;
+
+        }
+        .book {
+    display: inline-block;
+    border: 5cm;
+    border-radius: 6;
+    width: 200px; /* Adjust the width as needed */
+    height: 300px; /* Fixed height for each book box */
+    margin-top: 40px;
+    margin-left : 50px;
+    margin-right: 50px; /* Add margin for spacing between books */
+    margin-bottom: 100px;
+    vertical-align: top; /* Align boxes from the top */
+    box-sizing: border-box; /* Include padding and border in the box's total width and height */
+}
+
+.book h2 {
+    margin-top: 10px; /* Add margin to the top of the book title */
+    font-size: 16px; /* Adjust font size as needed */
+    overflow: hidden; /* Hide overflowing text */
+    white-space: nowrap; /* Prevent text from wrapping */
+    text-overflow: ellipsis; /* Display ellipsis (...) for overflowing text */
+}
+
+@media (max-width: 768px) {
+    .book {
+        width: calc(25% - 20px); /* Adjust width to fit four books per row on smaller screens */
+    }
+}
+        .book img {
+            width: 100%; /* Make sure the image fills the container */
+            height: 250px; /* Maintain aspect ratio */
+        }
+        
+        .discount-applied {
+            color: green;
+        }
+        .discount-not-applied {
+            color: red;
+        }
+    </style>
+</head>
+<body>
+  
+    
+    <!-- Book Gallery -->
+    <div class="book-gallery">
+        <div class="container mt-5">
+            <h1 class="mb-4">Shopping Cart Details</h1>
+            <% if ( qq && qq.rows && qq.rows.length > 0) { %>
+                <% let totalPrice = 0; %>
+                <% let totalItems = 0; %>
+                
+                <% qq.rows.forEach(row => { %>
+             <% totalPrice += (row.DISCOUNT !== null ? row.BASE_PRICE*(1 - ( row.DISCOUNT/100)) * row.NUMBER_OF_COPY : row.BASE_PRICE * row.NUMBER_OF_COPY); %>
+                    <% totalItems += row.NUMBER_OF_COPY; %>
+                    <div class="card mb-3">
+                        <div class="row no-gutters">
+                            <div class="col-md-4">
+                                <img src="<%= row.COVER_PHOTO %>" class="card-img" alt="Book Cover">
+                            </div>
+                            <div class="col-md-8">
+                                <div class="card-body">
+                                    <h5 class="card-title"><%= row.BOOK_TITLE %></h5>
+                                    <p class="card-text">Price: $<%= row.BASE_PRICE.toFixed(2) %></p>
+                                    <p class="card-text">Quantity: <%= row.NUMBER_OF_COPY %></p>
+                                    <% if (row.DISCOUNT !== null) { %>
+                                        <p class="card-text discount-applied">Discount: $<%= row.DISCOUNT %></p>
+                                        <p class="card-text">Total Price: $<%= ((row.BASE_PRICE - row.BASE_PRICE*(row.DISCOUNT)/100) * row.NUMBER_OF_COPY).toFixed(2) %></p>
+                                    <% } else { %>
+                                        <p class="card-text discount-not-applied">No Discount Applied</p>
+                                        <p class="card-text">Total Price: $<%= (row.BASE_PRICE * row.NUMBER_OF_COPY).toFixed(2) %></p>
+                                    <% } %>
+
+                                    <form action="/updateQuantity/<%= row.ISBN %>" method="POST">
+                                        <input type="number" id="quantity" name="quantity" value="<%= row.NUMBER_OF_COPY %>">
+                                        <button type="submit" class="btn btn-primary">Update Quantity </button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                <% }); %>
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Total Price: $<%= qq.rows[0].TOTAL_PRICE.toFixed(2) %></h5>
+                        <p class="card-text">Total Items: <%= qq.rows[0].TOTAL_ITEM %></p>
+                        <a href="/order/<%=qq.rows[0].CART_ID %>" class="btn btn-primary">Proceed to Confirm</a>
+                    </div>
+                </div>
+            <% } else { %>
+                <div class="card">
+                    <div class="card-body">
+                        <p class="card-text">You have not selected any items</p>
+                        <a href="/BrowseProduct" class="card-link">Want to explore our shop?</a>
+                    </div>
+                </div>
+            <% } %>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS, jQuery, and Popper.js -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

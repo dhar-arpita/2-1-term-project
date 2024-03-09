@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advanced Search</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body{
+            background-image: url(https://cdn5.vectorstock.com/i/1000x1000/05/54/woman-reading-book-vector-34250554.jpg);
+            background-size: cover;
+        }
+
+        .form-control {
+            width: 250px; /* Adjust width as needed */
+        }
+    </style>
+</head>
+<body>
+
+<div class="container mt-5">
+    <h1>Advanced Search</h1>
+    <form action="/advanceSearch" method="POST">
+        <div class="form-group">
+            <label for="title">Title:</label>
+            <input type="text" class="form-control" id="title" name="title" placeholder="Enter title">
+        </div>
+        <div class="form-group">
+            <label for="category">Category:</label>
+            <input type="text" class="form-control" id="category" name="category" placeholder="Enter category">
+        </div>
+        <div class="form-group">
+            <label for="writer">Writer:</label>
+            <input type="text" class="form-control" id="writer" name="writer" placeholder="Enter writer">
+        </div>
+
+        <div class="form-group">
+            <label for="edition">Edition::</label>
+            <input type="number" class="form-control" id="edition" name="edition" placeholder="Enter edition">
+        </div>
+        <button type="submit" class="btn btn-primary">Search</button>
+    </form>
+</div>
+
+<!-- Bootstrap JS (optional) -->
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
